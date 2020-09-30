@@ -1,0 +1,26 @@
+version: '3.2'
+
+services:
+  postgres-interdiscount-demo:
+    container_name: postgres-interdiscount-demo
+    image: postgres:13.0
+    restart: always
+    environment:
+    - POSTGRES_USER=interdiscount
+    - POSTGRES_PASSWORD=OiMj4Lv4IA8uypxdjqiZ
+    - POSTGRES_DB=interdiscount
+    ports:
+    - "5432:5432"
+
+  keycloak-interdiscount-demo:
+    container_name: keycloak-interdiscount-demo
+    image: jboss/keycloak:11.0.2
+    environment:
+    - KEYCLOAK_USER=keycloak
+    - KEYCLOAK_PASSWORD=keycloak
+    - KEYCLOAK_IMPORT=/realm/interdiscount_realm.json
+    - DB_VENDOR=h2 
+    ports:
+    - 8080:8080
+    volumes:
+    - "./keycloak:/realm"

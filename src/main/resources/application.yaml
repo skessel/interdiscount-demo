@@ -1,0 +1,51 @@
+server:
+  port: 8090
+
+demo:
+  adminId: 69346eba-9544-4589-a03b-23a441fce8bb	
+  adminUsername: administrator
+  adminPassword: OiMj4Lv4IA8uypxdjqiZ
+  userId: e5fdcff2-81c4-4662-810a-20bcc48cee8f
+  userUsername: user
+  userPassword: OiMj4Lv4IA8uypxdjqiZ
+
+kc:
+  base-url: http://localhost:8080
+  base-auth-url:  ${kc.base-url}/auth
+  base-admin-url:  ${kc.base-auth-url}/admin
+  realm: interdiscount
+  realm-auth-url: ${kc.base-auth-url}/realms/${kc.realm}
+  realm-admin-url: ${kc.base-admin-url}/realms/${kc.realm}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          procuration:
+            client-id: spring-boot-demo
+            client-name: interdiscount demo application
+            client-secret: 54208aa7-f50a-4be3-ac4c-49eb5162db9e
+            provider: keycloak
+            authorization-grant-type: authorization_code
+            scope: openid, profile
+        provider:
+          keycloak:
+            authorization-uri: ${kc.realm-auth-url}/protocol/openid-connect/auth
+            jwk-set-uri: ${kc.realm-auth-url}/protocol/openid-connect/certs
+            token-uri: ${kc.realm-auth-url}/protocol/openid-connect/token
+            user-info-uri: ${kc.realm-auth-url}/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+            issuer-uri: ${kc.realm-auth-url}
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/interdiscount
+    username: interdiscount
+    password: OiMj4Lv4IA8uypxdjqiZ
+#    url: jdbc:sqlserver://localhost:1434;databaseName=interdiscount
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
