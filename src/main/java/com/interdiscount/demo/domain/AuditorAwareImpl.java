@@ -1,4 +1,4 @@
-package com.interdiscount.demo.configuration.jpa;
+package com.interdiscount.demo.domain;
 
 import static java.util.Objects.nonNull;
 

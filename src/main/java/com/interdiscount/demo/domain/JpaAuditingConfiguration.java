@@ -1,4 +1,4 @@
-package com.interdiscount.demo.configuration.jpa;
+package com.interdiscount.demo.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
