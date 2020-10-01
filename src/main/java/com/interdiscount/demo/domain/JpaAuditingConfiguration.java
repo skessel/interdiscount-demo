@@ -11,10 +11,9 @@ import com.interdiscount.demo.DemoApplicationProperties;
 @EnableJpaAuditing
 public class JpaAuditingConfiguration {
 
-    @Bean
-    public AuditorAware<String> auditorProvider(DemoApplicationProperties properties) {
-        return new AuditorAwareImpl(properties);
-    }
+	@Bean
+	public AuditorAware<String> auditorProvider(DemoApplicationProperties properties) {
+		return new AuditorAwareImpl(properties);
+	}
 
-    
 }

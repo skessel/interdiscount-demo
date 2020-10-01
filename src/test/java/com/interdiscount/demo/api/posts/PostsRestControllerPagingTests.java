@@ -22,81 +22,81 @@ import org.springframework.http.ResponseEntity;
 import com.interdiscount.demo.DemoApplicationTestBase;
 
 public class PostsRestControllerPagingTests extends DemoApplicationTestBase {
-	
+
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
+
 	@Test
 	public void whenResourcesAreRetrievedPaged_then200IsReceived() {
 		createEntities(5);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(0, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
-		
+
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getContent()).isNotEmpty();
 	}
-	
+
 	@Test
-	public void whenPageOfResourcesAreRetrievedOutOfBounds_then200IsReceived(){
+	public void whenPageOfResourcesAreRetrievedOutOfBounds_then200IsReceived() {
 		createEntities(5);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(10, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getContent()).isEmpty();
 	}
-	
+
 	@Test
-	public void givenResourcesExist_whenFirstPageIsRetrieved_thenPageContainsResources(){
+	public void givenResourcesExist_whenFirstPageIsRetrieved_thenPageContainsResources() {
 		createEntities(1);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(0, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getContent()).hasSize(1);
 	}
-	
+
 	@Test
-	public void whenFirstPageOfResourcesAreRetrieved_thenSecondPageIsNext(){
+	public void whenFirstPageOfResourcesAreRetrieved_thenSecondPageIsNext() {
 		createEntities(5);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(0, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
-		
+
 		assertThat(response.getBody().getLink(IanaLinkRelations.NEXT)).isPresent();
 		assertThat(toURI(response.getBody().getLink(IanaLinkRelations.NEXT))).hasQuery(createPageUri(1, 2).getQuery());
 	}
-	
+
 	@Test
-	public void whenFirstPageOfResourcesAreRetrieved_thenNoPreviousPage(){
+	public void whenFirstPageOfResourcesAreRetrieved_thenNoPreviousPage() {
 		createEntities(5);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(0, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
-		
+
 		assertThat(response.getBody().getLink(IanaLinkRelations.PREV)).isEmpty();
 	}
-	
+
 	@Test
-	public void whenSecondPageOfResourcesAreRetrieved_thenFirstPageIsPrevious(){
+	public void whenSecondPageOfResourcesAreRetrieved_thenFirstPageIsPrevious() {
 		createEntities(5);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(1, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
-		
+
 		assertThat(response.getBody().getLink(IanaLinkRelations.PREV)).isNotNull();
 		assertThat(toURI(response.getBody().getLink(IanaLinkRelations.PREV))).hasQuery(createPageUri(0, 2).getQuery());
 	}
-	
+
 	@Test
-	public void whenLastPageOfResourcesIsRetrieved_thenNoNextPageIsDiscoverable(){
+	public void whenLastPageOfResourcesIsRetrieved_thenNoNextPageIsDiscoverable() {
 		createEntities(0);
 		RequestEntity<Void> request = RequestEntity.get(createPageUri(0, 2)).build();
 		ResponseEntity<PagedModel<PostOutputDTO>> response = this.restTemplate.exchange(request, PostOutputDTO.LIST_TYPE);
-		
+
 		assertThat(response.getBody().getLink(IanaLinkRelations.LAST)).isEmpty();
 		assertThat(response.getBody().getLink(IanaLinkRelations.NEXT)).isEmpty();
 	}
-	
+
 	private void createEntities(int count) {
 		Stream.generate(() -> createPostEntity()).limit(count).forEach(entity -> this.postRepostitory.save(entity));
 	}
-	
+
 	private static URI createPageUri(int page, int size) {
 		return fromPath(REST_POST_PATH).queryParam(PARAM_PAGE, page).queryParam(PARAM_SIZE, size).build().toUri();
 	}

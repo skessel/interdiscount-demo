@@ -23,8 +23,7 @@ public class KeycloakLogoutHandler extends SecurityContextLogoutHandler {
 	}
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 		super.logout(request, response, authentication);
 		propagateLogoutToKeycloak((OidcUser) authentication.getPrincipal());
 	}
@@ -37,8 +36,7 @@ public class KeycloakLogoutHandler extends SecurityContextLogoutHandler {
 				.fromUriString(endSessionEndpoint) //
 				.queryParam("id_token_hint", user.getIdToken().getTokenValue());
 
-		ResponseEntity<String> logoutResponse = this.restTemplate
-				.getForEntity(builder.toUriString(), String.class);
+		ResponseEntity<String> logoutResponse = this.restTemplate.getForEntity(builder.toUriString(), String.class);
 		if (logoutResponse.getStatusCode().is2xxSuccessful()) {
 			this.log.info("Successfulley logged out in Keycloak");
 		} else {

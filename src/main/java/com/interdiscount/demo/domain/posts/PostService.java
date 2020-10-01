@@ -14,46 +14,45 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
-    private final PostEntityRepositoty postRepostory;
+	private final PostEntityRepositoty postRepostory;
 
-    @Autowired
-    public PostService(PostEntityRepositoty postRepostory) {
-        this.postRepostory = postRepostory;
-    }
+	@Autowired
+	public PostService(PostEntityRepositoty postRepostory) {
+		this.postRepostory = postRepostory;
+	}
 
-    public PostEntity createPost(String title, String content) {
+	public PostEntity createPost(String title, String content) {
 
-        PostEntity post = new PostEntity();
-        post.setTitle(title);
-        post.setContent(content);
+		PostEntity post = new PostEntity();
+		post.setTitle(title);
+		post.setContent(content);
 
-        return this.postRepostory.save(post);
-    }
-    
-    public PostEntity updatePost(UUID id, String title, String content) {
+		return this.postRepostory.save(post);
+	}
 
-    	PostEntity entity = getById(id);
-    	if (nonNull(title)) {
-    		entity.setTitle(title);
-    	}
-    	if (nonNull(content)) {
-    		entity.setContent(content);
-    	}
-        return this.postRepostory.save(entity);
-    }
-    
-    public PostEntity getById(UUID id) {
-    	return this.postRepostory.findById(id)
-    		.orElseThrow(() -> new EntityNotFoundException(String.format("Post with id %s could not be found", id.toString())));
-    }
-    
-    public void deleteById(UUID id) {
-    	this.postRepostory.delete(getById(id));
-    }
+	public PostEntity updatePost(UUID id, String title, String content) {
 
-    public Page<PostEntity> getPaged(int page, int size) {
-        return this.postRepostory.findAll(PageRequest.of(page, size));
-    }
+		PostEntity entity = getById(id);
+		if (nonNull(title)) {
+			entity.setTitle(title);
+		}
+		if (nonNull(content)) {
+			entity.setContent(content);
+		}
+		return this.postRepostory.save(entity);
+	}
 
-    
+	public PostEntity getById(UUID id) {
+		return this.postRepostory.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(
+						"Post with id %s could not be found", id.toString())));
+	}
+
+	public void deleteById(UUID id) {
+		this.postRepostory.delete(getById(id));
+	}
+
+	public Page<PostEntity> getPaged(int page, int size) {
+		return this.postRepostory.findAll(PageRequest.of(page, size));
+	}
+
 }

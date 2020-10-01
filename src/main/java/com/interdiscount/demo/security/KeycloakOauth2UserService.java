@@ -1,5 +1,7 @@
 package com.interdiscount.demo.security;
 
+import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -8,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
@@ -24,17 +25,17 @@ import org.springframework.util.CollectionUtils;
 
 public class KeycloakOauth2UserService extends OidcUserService {
 
-    private final OAuth2Error INVALID_REQUEST = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
+	private final OAuth2Error INVALID_REQUEST = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
 
-    private final JwtDecoder jwtDecoder;
-    private final GrantedAuthoritiesMapper authoritiesMapper;
-    
-    public KeycloakOauth2UserService(JwtDecoder jwtDecoder, GrantedAuthoritiesMapper authoritiesMapper) {
-        this.jwtDecoder = jwtDecoder;
-        this.authoritiesMapper = authoritiesMapper;
-    }
+	private final JwtDecoder jwtDecoder;
+	private final GrantedAuthoritiesMapper authoritiesMapper;
 
-    /**
+	public KeycloakOauth2UserService(JwtDecoder jwtDecoder, GrantedAuthoritiesMapper authoritiesMapper) {
+		this.jwtDecoder = jwtDecoder;
+		this.authoritiesMapper = authoritiesMapper;
+	}
+
+	/**
 	 * Augments {@link OidcUserService#loadUser(OidcUserRequest)} to add authorities
 	 * provided by Keycloak.
 	 * 
@@ -52,9 +53,9 @@ public class KeycloakOauth2UserService extends OidcUserService {
 		authorities.addAll(extractKeycloakAuthorities(userRequest));
 
 		return new DefaultOidcUser(authorities, userRequest.getIdToken(), user.getUserInfo(), "preferred_username");
-    }
-    
-    /**
+	}
+
+	/**
 	 * Extracts {@link GrantedAuthority GrantedAuthorities} from the AccessToken in
 	 * the {@link OidcUserRequest}.
 	 * 
@@ -78,8 +79,7 @@ public class KeycloakOauth2UserService extends OidcUserService {
 			return Collections.emptyList();
 		}
 
-		Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-				.createAuthorityList(clientRoles.toArray(new String[0]));
+		Collection<? extends GrantedAuthority> authorities = createAuthorityList(clientRoles.toArray(new String[0]));
 		if (authoritiesMapper == null) {
 			return authorities;
 		}
@@ -95,5 +95,5 @@ public class KeycloakOauth2UserService extends OidcUserService {
 			throw new OAuth2AuthenticationException(INVALID_REQUEST, e);
 		}
 	}
-    
+
 }

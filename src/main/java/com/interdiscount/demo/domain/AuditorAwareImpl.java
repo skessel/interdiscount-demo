@@ -14,26 +14,26 @@ import com.interdiscount.demo.DemoApplicationProperties;
 
 class AuditorAwareImpl implements AuditorAware<String> {
 
-    private final DemoApplicationProperties properties;
+	private final DemoApplicationProperties properties;
 
-    AuditorAwareImpl(DemoApplicationProperties properties) {
-        this.properties = properties;
-    }
+	AuditorAwareImpl(DemoApplicationProperties properties) {
+		this.properties = properties;
+	}
 
-    @Override
-    public Optional<String> getCurrentAuditor() {
+	@Override
+	public Optional<String> getCurrentAuditor() {
 
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        String user = null;
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		String user = null;
 
-        if (nonNull(securityContext) && nonNull(securityContext.getAuthentication())) {
-          user = ((OidcUser)securityContext.getAuthentication().getPrincipal()).getSubject();
-        }
+		if (nonNull(securityContext) && nonNull(securityContext.getAuthentication())) {
+			user = ((OidcUser) securityContext.getAuthentication().getPrincipal()).getSubject();
+		}
 
-        if (Objects.isNull(user)) {
-            user = this.properties.getAdminId();
-        }
+		if (Objects.isNull(user)) {
+			user = this.properties.getAdminId();
+		}
 
-        return Optional.of(user);
-    }
+		return Optional.of(user);
+	}
 }

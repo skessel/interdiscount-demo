@@ -14,28 +14,28 @@ import com.interdiscount.demo.domain.AbstractEntity;
 @Table(name = "posts")
 public class PostEntity extends AbstractEntity {
 
-    @NotBlank
-    @Column(name = "title", length = 255, nullable = false)
-    private String title;
+	@NotBlank
+	@Column(name = "title", length = 255, nullable = false)
+	private String title;
 
-    @NotBlank
-    @Column(name = "content", nullable = false, length = 100000)
-    private String content;
+	@NotBlank
+	@Column(name = "content", nullable = false, length = 100000)
+	private String content;
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-    
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 }

@@ -51,7 +51,8 @@ public class PostsRestController {
 	private final PagedResourcesAssembler<PostEntity> pageResourceAssembler;
 
 	@Autowired
-	public PostsRestController(PostService postService, RepresentationModelAssemblerSupport<PostEntity, PostOutputDTO> resourceAssembler,
+	public PostsRestController(PostService postService,
+			RepresentationModelAssemblerSupport<PostEntity, PostOutputDTO> resourceAssembler,
 			PagedResourcesAssembler<PostEntity> pageResourceAssembler) {
 		this.postService = postService;
 		this.resourceAssembler = resourceAssembler;
@@ -69,11 +70,12 @@ public class PostsRestController {
 		this.logger.info("Post created {}", postDTO);
 		return postDTO;
 	}
-	
+
 	@ResponseBody
 	@ResponseStatus(OK)
 	@PatchMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = HAL_JSON_VALUE)
-	public PostOutputDTO updatePost(@PathVariable("id") UUID id, @RequestBody PostInputDTO post) {
+	public PostOutputDTO updatePost(@PathVariable("id") UUID id,
+			@RequestBody PostInputDTO post) {
 
 		this.logger.info("Update post {}", post);
 		PostEntity postEntity = this.postService.updatePost(id, post.getTitle(), post.getContent());
@@ -81,35 +83,35 @@ public class PostsRestController {
 		this.logger.info("Post updated {}", postDTO);
 		return postDTO;
 	}
-	
+
 	@ResponseBody
 	@ResponseStatus(OK)
 	@GetMapping(path = "/{id}", produces = HAL_JSON_VALUE)
 	public PostOutputDTO get(@PathVariable("id") UUID id) {
-		
+
 		this.logger.info("Get post with {}", id);
 		PostEntity entity = this.postService.getById(id);
 		PostOutputDTO dto = this.resourceAssembler.toModel(entity);
 		this.logger.info("Post found {}", dto);
 		return dto;
 	}
-	
-  @ResponseBody
-  @ResponseStatus(OK)
-  @GetMapping(produces = HAL_JSON_VALUE)
-  public PagedModel<PostOutputDTO> getPaged(
-      @RequestParam(value = PARAM_PAGE, defaultValue = DEFAULT_PAGE, required = false) Integer page,
-      @RequestParam(value = PARAM_SIZE, defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size) {
 
-    this.logger.info("Get Posts with page {} and size {}", page, size);
-    Link self = linkTo(methodOn(getClass()).getPaged(page, size)).withSelfRel();
+	@ResponseBody
+	@ResponseStatus(OK)
+	@GetMapping(produces = HAL_JSON_VALUE)
+	public PagedModel<PostOutputDTO> getPaged(
+			@RequestParam(value = PARAM_PAGE, defaultValue = DEFAULT_PAGE, required = false) Integer page,
+			@RequestParam(value = PARAM_SIZE, defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size) {
 
-    Page<PostEntity> posts = this.postService.getPaged(page, size);
-    PagedModel<PostOutputDTO> results = this.pageResourceAssembler.toModel(posts, this.resourceAssembler, self);
+		this.logger.info("Get Posts with page {} and size {}", page, size);
+		Link self = linkTo(methodOn(getClass()).getPaged(page, size)).withSelfRel();
 
-    return results;
-  }
-	
+		Page<PostEntity> posts = this.postService.getPaged(page, size);
+		PagedModel<PostOutputDTO> results = this.pageResourceAssembler.toModel(posts, this.resourceAssembler, self);
+
+		return results;
+	}
+
 	@ResponseBody
 	@ResponseStatus(OK)
 	@DeleteMapping(path = "/{id}")
@@ -118,5 +120,5 @@ public class PostsRestController {
 		this.postService.deleteById(id);
 		this.logger.info("Post with id {} deleted", id);
 	}
-	
+
 }

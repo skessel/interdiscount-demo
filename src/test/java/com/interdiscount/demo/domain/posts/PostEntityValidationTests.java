@@ -12,69 +12,69 @@ import com.interdiscount.demo.domain.TestDataProvider;
 
 public class PostEntityValidationTests extends DemoApplicationTestBase {
 
-    @Test
-    public void titleNull() {
+	@Test
+	public void titleNull() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity(null));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity(null));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 
-    @Test
-    public void titleEmpty() {
+	@Test
+	public void titleEmpty() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity(""));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity(""));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 
-    @Test
-    public void titleBlank() {
+	@Test
+	public void titleBlank() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity("   "));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity("   "));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 
-    @Test
-    public void contentNull() {
+	@Test
+	public void contentNull() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), null));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), null));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 
-    @Test
-    public void contentEmpty() {
+	@Test
+	public void contentEmpty() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), ""));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), ""));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 
-    @Test
-    public void contentBlank() {
+	@Test
+	public void contentBlank() {
 
-        try {
-            this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), "   "));
-            failBecauseExceptionWasNotThrown(TransactionSystemException.class);
-        } catch (TransactionSystemException e) {
-            assertThat(this.postRepostitory.count()).isZero();
-        }
-    }
+		try {
+			this.postRepostitory.save(TestDataProvider.createPostEntity(generateString(10), "   "));
+			failBecauseExceptionWasNotThrown(TransactionSystemException.class);
+		} catch (TransactionSystemException e) {
+			assertThat(this.postRepostitory.count()).isZero();
+		}
+	}
 }

@@ -33,18 +33,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Value("${kc.realm}")
 	private String realm;
-	
-    @Value("${spring.security.cors.path:/**}")
-    private String corsPath;
 
-    @Value("${spring.security.cors.allowedorigins:*}")
-    private List<String> allowedOrigins;
+	@Value("${spring.security.cors.path:/**}")
+	private String corsPath;
 
-    @Value("${spring.security.cors.allowedmethods:OPTIONS,HEAD,GET,POST,PUT,DELETE,PATCH}")
-    private List<String> allowedMethods;
+	@Value("${spring.security.cors.allowedorigins:*}")
+	private List<String> allowedOrigins;
 
-    @Value("${spring.security.cors.allowedheaders:Authorization,Cache-Control,Content-Type}")
-    private List<String> allowedHeaders;
+	@Value("${spring.security.cors.allowedmethods:OPTIONS,HEAD,GET,POST,PUT,DELETE,PATCH}")
+	private List<String> allowedMethods;
+
+	@Value("${spring.security.cors.allowedheaders:Authorization,Cache-Control,Content-Type}")
+	private List<String> allowedHeaders;
 
 	@Autowired
 	private KeycloakOauth2UserService keycloakOidcUserService;
@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
 		ClientRegistration clientReg = this.clientRegisratrionRepo.findByRegistrationId("procuration");
 		Filter f = new OidcBearerTokenAuthenticationFilter(clientReg, this.keycloakOidcUserService);
 
@@ -81,19 +81,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 	.oidcUserService(this.keycloakOidcUserService);
         //@formatter:on
 	}
-	
+
 	@Bean
-    public CorsConfigurationSource corsConfigurationSource()
-    {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(this.allowedOrigins);
-        configuration.setAllowedMethods(this.allowedMethods);
-        configuration.setAllowedHeaders(this.allowedHeaders);
-        
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(this.corsPath, configuration);
-        return source;
-    }
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(this.allowedOrigins);
+		configuration.setAllowedMethods(this.allowedMethods);
+		configuration.setAllowedHeaders(this.allowedHeaders);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration(this.corsPath, configuration);
+		return source;
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

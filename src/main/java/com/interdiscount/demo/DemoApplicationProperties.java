@@ -10,7 +10,7 @@ public class DemoApplicationProperties {
 	private String adminId;
 	private String adminUsername;
 	private String adminPassword;
-	
+
 	private String userId;
 	private String userUsername;
 	private String userPassword;

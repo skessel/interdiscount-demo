@@ -25,75 +25,79 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners({AuditingEntityListener.class})
 public abstract class AbstractEntity implements Comparable<AbstractEntity> {
 
-    @Id
+	@Id
 	@GeneratedValue
 	@Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+	private UUID id;
 
-    @CreatedBy
-    @Column(name = "creation_user", length = 255, updatable = false, nullable = false)
-    private String createdBy;
+	@CreatedBy
+	@Column(name = "creation_user", length = 255, updatable = false, nullable = false)
+	private String createdBy;
 
-    @LastModifiedBy
-    @Column(name = "modification_user", length = 255, updatable = true, nullable = false)
-    private String modifiedBy;
+	@LastModifiedBy
+	@Column(name = "modification_user", length = 255, updatable = true, nullable = false)
+	private String modifiedBy;
 
-    @CreatedDate
-    @Column(name = "creation_date", updatable = false, nullable = false)
-    private Instant createionDate;
+	@CreatedDate
+	@Column(name = "creation_date", updatable = false, nullable = false)
+	private Instant createionDate;
 
-    @LastModifiedDate
-    @Column(name = "modification_date", updatable = true, nullable = false)
-    private Instant modificationDate;
+	@LastModifiedDate
+	@Column(name = "modification_date", updatable = true, nullable = false)
+	private Instant modificationDate;
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
-    public UUID getId() {
-        return id;
-    }
+	public UUID getId() {
+		return id;
+	}
 
-    public Instant getCreateionDate() {
-        return createionDate;
-    }
+	public Instant getCreateionDate() {
+		return createionDate;
+	}
 
-    public Instant getModificationDate() {
-        return modificationDate;
-    }
+	public Instant getModificationDate() {
+		return modificationDate;
+	}
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
+	@Override
+	public boolean equals(Object obj) {
 
-        if (Objects.isNull(obj) || !getClass().isInstance(obj)) {
-            return false;
-        }
+		if (Objects.isNull(obj) || !getClass().isInstance(obj)) {
+			return false;
+		}
 
-        AbstractEntity other = AbstractEntity.class.cast(obj);
-        return new EqualsBuilder().append(this.id, other.id).isEquals();
-    }
+		AbstractEntity other = AbstractEntity.class.cast(obj);
+		return new EqualsBuilder().append(this.id, other.id).isEquals();
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(this.id).toHashCode();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.id).toHashCode();
+	}
 
-    @Override
-    public int compareTo(AbstractEntity o) {
-        return new CompareToBuilder().append(this.getClass(), o.getClass()).append(this.id, o.id).toComparison();
-    }
+	@Override
+	public int compareTo(AbstractEntity o) {
+		return new CompareToBuilder()
+				.append(this.getClass(), o.getClass())
+				.append(this.id, o.id).toComparison();
+	}
 
-    @Override
-    public String toString() {
-        return getClass().getName().concat("--> ").concat(nonNull(this.id) ? this.id.toString() : "unsaved");
-    }
+	@Override
+	public String toString() {
+		return getClass().getName()
+				.concat("--> ")
+				.concat(nonNull(this.id) ? this.id.toString() : "unsaved");
+	}
 
 }

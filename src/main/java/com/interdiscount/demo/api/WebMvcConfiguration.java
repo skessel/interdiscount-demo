@@ -21,7 +21,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Bean
 	Jackson2ObjectMapperBuilder objectMapperBuilder() {
-		
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
 		builder.modules(new Jackson2HalModule(), new JavaTimeModule(), new Jdk8Module());
 		builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
