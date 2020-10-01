@@ -1,5 +1,11 @@
 # interdiscount-demo
 
+## required local installed software
+
+- java jdk 11 or higher
+- docker
+- docker-compose
+
 ## build
 
 - change to the directory docker-compose 
